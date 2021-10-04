@@ -13,8 +13,8 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('posts');
+    {   $posts = Post::all();
+        return view('posts',compact('posts'));
     }
 
     /**
