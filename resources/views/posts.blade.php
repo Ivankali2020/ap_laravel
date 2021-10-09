@@ -3,21 +3,21 @@
 @section('content')
     <h1 class="mt-4 text-center">Hello Post</h1>
     <div class="mb-3 ">
-        @isset($status)
-            {{ $status }}
-        @endisset
+
         
         @if(session('status'))
             {{ session('id')}}
-            <div class="alert alert-success ">{{ session('status') }}</div>
+            <div class="alert alert-success noti ">{{ session('status') }}</div>
         @endif
 
     
         <a href="{{ route('posts.create') }}" class="btn btn-success">New</a>
-
+        <p>
+            {{ $auth->name }}
+        </p>
     </div>
-  @foreach($posts as $post)
-    <div class="col-6 ">
+  @foreach($auth->posts as $post)
+    <div class="col-md-6 ">
         <div class="card mb-4">
             <div class="card-header">
                 {{ $post->name }}
@@ -38,5 +38,12 @@
         </div>
     </div>
       @endforeach
+
+@endsection
+@section('script')
+
+<script>
+  
+</script>
 
 @endsection

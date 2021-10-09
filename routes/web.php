@@ -21,3 +21,7 @@ Route::get('/', function () {
 //Route::get('/posts',[\App\Http\Controllers\PostController::class,'index'])->name('posts.index');
 
 Route::resource('posts',\App\Http\Controllers\PostController::class);
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');

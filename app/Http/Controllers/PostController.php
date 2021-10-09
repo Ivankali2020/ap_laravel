@@ -3,21 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PostFormRequest;
 
 class PostController extends Controller
-{
+{   
+
+    public function __construct()
+    {
+        return $this->middleware('auth');
+    }
 
     public function index()
-    {   $posts = Post::all();
-        return view('posts',compact('posts'));
+    { 
+        $auth = Auth::user();
+        $posts = Post::all();
+        return view('posts',compact('auth','posts'));
     }
 
 
     public function create()
     {
-        return view('create');
+        $categories = Category::all();
+        return view('create',compact('categories'));
     }
 
     public function store(PostFormRequest $request)
@@ -30,15 +40,20 @@ class PostController extends Controller
 
 
     public function show(Post $post)
-    {
+    {       
+        $this->authorize('view',$post);
+        // if($post->user_id != Auth::id()){
+        //     return abort('404');
+        // }
         return view('show',compact('post'));
     }
 
-
+    
     public function edit(Post $post)
     {
-
-        return view('edit',compact('post'));
+        $this->authorize('view',$post);
+        $categories = Category::all();
+        return view('edit',compact('post','categories'));
     }
 
 

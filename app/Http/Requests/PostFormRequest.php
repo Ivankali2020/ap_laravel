@@ -26,6 +26,11 @@ class PostFormRequest extends FormRequest
         return [
             'name' => 'required',
             'description' => 'required',
+            'category_id' => 'required',
         ];
+    }
+
+    public function message(){
+        
     }
 }
