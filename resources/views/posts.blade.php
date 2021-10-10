@@ -6,37 +6,44 @@
 
         
         @if(session('status'))
-            {{ session('id')}}
-            <div class="alert alert-success noti ">{{ session('status') }}</div>
+        <div class="alert alert-{{ session('color') }} alert-dismissible fade show" role="alert">
+            {{ session('status') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
         @endif
 
     
         <a href="{{ route('posts.create') }}" class="btn btn-success">New</a>
+        <a href="{{ route('customLogout') }}" class="btn btn-outline-danger">Logout</a>
         <p>
             {{ $auth->name }}
         </p>
     </div>
-  @foreach($auth->posts as $post)
-    <div class="col-md-6 ">
-        <div class="card mb-4">
-            <div class="card-header">
-                {{ $post->name }}
-            </div>
-            <div class="card-body">
-                <p>
-                    {{ \Illuminate\Support\Str::limit($post->description,100) }}
-                </p>
-                <a href="{{ route('posts.edit',$post->id) }}" class="btn btn-warning">Edit</a>
-                <a href="{{ route('posts.show',$post->id) }}" class="btn btn-primary">Detail</a>
+  @foreach($posts as $post)
+  @can('view',$post)
+  <div class="col-md-6 ">
+    <div class="card mb-4">
+        <div class="card-header">
+            {{ $post->name }}
+        </div>
+        <div class="card-body">
+            <p>
+                
+                {{ \Illuminate\Support\Str::limit($post->description,100) }}
+            </p>
+            <a href="{{ route('posts.edit',$post->id) }}" class="btn btn-warning">Edit</a>
+            <a href="{{ route('posts.show',$post->id) }}" class="btn btn-primary">Detail</a>
 
-                <form action="{{ route('posts.destroy',$post->id) }}" class="d-inline" method="post">
-                    @method('delete')
-                    @csrf
-                    <button class=" btn btn-danger">Delete</button>
-                </form>
-            </div>
+            <form action="{{ route('posts.destroy',$post->id) }}" class="d-inline" method="post">
+                @method('delete')
+                @csrf
+                <button class=" btn btn-danger">Delete</button>
+            </form>
         </div>
     </div>
+</div>
+  @endcan
+    
       @endforeach
 
 @endsection

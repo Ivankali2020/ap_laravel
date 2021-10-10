@@ -27,6 +27,9 @@
                                 <option value="{{ $cat->id }}">{{ $cat->title }}</option>
                             @endforeach
                         </select>
+                        @error('category_id')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
 
                         <button class="btn btn-success">Submit</button>
                         <a href="{{ route('posts.index') }}" class="btn btn-warning">Back</a>
