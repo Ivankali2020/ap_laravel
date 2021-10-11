@@ -18,6 +18,9 @@
         <p>
             {{ $auth->name }}
         </p>
+        
+                 
+        
     </div>
   @foreach($posts as $post)
   @can('view',$post)

@@ -9,7 +9,7 @@
 <body>
 <div style="display: block; margin: auto; max-width: 600px;" class="main">
       <h1 style="font-size: 18px; font-weight: bold; margin-top: 20px">
-        Congrats <strong class="text-danger"> {{ $post->id }} </strong> for sending test email with Mailtrap! 
+        Congrats <strong class="text-danger"> {{ $post->id }} </strong> for sending test email with Mailtrap!
         </h1>
       <p>Inspect it using the tabs you see above and learn how this email can be improved.</p>
       <img alt="Inspect with Tabs" src="https://assets-examples.mailtrap.io/integration-examples/welcome.png" style="width: 100%;">

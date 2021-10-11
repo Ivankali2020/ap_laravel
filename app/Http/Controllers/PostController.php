@@ -7,9 +7,13 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Mail\StoreTaskMail;
 use Illuminate\Http\Request;
+use App\Events\PostCreateEvent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\PostCreateNoti;
+use App\Notifications\PostDeleteNoti;
 use App\Http\Requests\PostFormRequest;
+use Illuminate\Support\Facades\Notification;
 
 class PostController extends Controller
 {   
@@ -24,9 +28,18 @@ class PostController extends Controller
         // Mail::raw('Hello World', function ($message) {
         //     $message->to('user@gmail.com')->subject('Ap Hello Subject');
         // });
+        // $data = [
+        //     'name' => 'Ivan',
+        //     'age' => 21,
+        //     'job' => 'wanna be programmer'
+        // ];
+        // Notification::send(Auth::user(),new PostCreateNoti($data));
+        // echo 'sent mail',exit();
         $auth = Auth::user();
         $posts = Post::all();
-        return view('posts',compact('auth','posts'));
+        $notifications = $auth->notifications;
+
+        return view('posts',compact('auth','posts','notifications'));
     }
 
 
@@ -44,11 +57,15 @@ class PostController extends Controller
         $post = Post::create(array_merge($validated,['user_id' => Auth::id()]));
 
         // Mail::to($request->user())->send(new StoreTaskMail($post));
+        // Notification::send(Auth::user(),new PostCreateNoti($validated));
+        // $user = Auth::user();
+        // $user->notify(new PostCreateNoti($validated));
+        event(new PostCreateEvent($post));
         return redirect()->route('posts.index')->with(config('aprogrammer.create'));
     }
 
 
-    public function show(Post $post,Test $test)
+    public function show(Post $post)
     {     
         
         // dd($test);
@@ -78,7 +95,8 @@ class PostController extends Controller
 
 
     public function destroy(Post $post)
-    {
+    {   
+        Notification::send(Auth::user(),new PostDeleteNoti());
         $post->delete();
         return redirect()->route('posts.index');
 
@@ -86,7 +104,7 @@ class PostController extends Controller
 
     public function logout(){
         Auth::logout();
-
+        dd('hello');
         return redirect()->route('login');
     }
 }

@@ -25,15 +25,15 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public static function booted(){
-        static::created(function($post){            
-            Mail::to(Auth::user()->email)->send(new StoreTaskMail($post));
-        });
+    // public static function booted(){
+    //     static::created(function($post){            
+    //         Mail::to(Auth::user()->email)->send(new StoreTaskMail($post));
+    //     });
 
-        static::updating(function($post){            
-            Mail::to(Auth::user()->email)->send(new StoreTaskMail($post));
-        });
-    }
+    //     static::updating(function($post){            
+    //         Mail::to(Auth::user()->email)->send(new StoreTaskMail($post));
+    //     });
+    // }
 
    
 }
